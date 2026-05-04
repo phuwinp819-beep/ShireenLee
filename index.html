@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shireen Lee — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* ── THEME TOKENS ── */
+        [data-theme="light"] {
+            --bg: #F7F3EC;
+            --bg2: #FDFAF5;
+            --ink: #1C1C1A;
+            --soft: #7A7468;
+            --border: #E0D9CE;
+            --accent: #C4846A;
+            --accent-light: #F0DDD4;
+            --sage: #7A9B7C;
+            --sage-light: #E4EDE4;
+            --img-overlay: rgba(247, 243, 236, 0.3);
+        }
+
+        [data-theme="dark"] {
+            --bg: #111110;
+            --bg2: #1A1917;
+            --ink: #F0EBE1;
+            --soft: #8A847C;
+            --border: #2E2C29;
+            --accent: #D4987C;
+            --accent-light: #2A1F19;
+            --sage: #7A9B7C;
+            --sage-light: #162016;
+            --img-overlay: rgba(17, 17, 16, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: none;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        /* ── CURSOR ── */
+        #cursor-dot {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s, height 0.15s, background 0.15s;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(.25, .8, .25, 1), height 0.3s cubic-bezier(.25, .8, .25, 1), opacity 0.3s;
+            opacity: 0.6;
+        }
+
+        body.cursor-hover #cursor-dot {
+            width: 14px;
+            height: 14px;
+        }
+
+        body.cursor-hover #cursor-ring {
+            width: 56px;
+            height: 56px;
+            opacity: 0.3;
+        }
+
+        body.cursor-click #cursor-dot {
+            width: 6px;
+            height: 6px;
+        }
+
+        /* ── SCROLL PROGRESS ── */
+        #progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 200;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sage), var(--accent));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4rem;
+            height: 60px;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        nav.scrolled {
+            background: color-mix(in srgb, var(--bg) 88%, transparent);
+            border-bottom-color: var(--border);
+        }
+
+        .nav-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--soft);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s cubic-bezier(.25, .8, .25, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--ink);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.3rem 0.7rem;
+            cursor: none;
+            font-size: 0.9rem;
+            transition: background 0.2s, transform 0.15s;
+            color: var(--ink);
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+            transform: scale(1.05);
+        }
+
+        /* ── HERO ── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 4rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            inset: 0;
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 820px;
+        }
+
+        .hero-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.6s 0.2s forwards;
+        }
+
+        .hero-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3.8rem, 8.5vw, 7.5rem);
+            font-weight: 300;
+            line-height: 0.92;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s 0.4s forwards;
+        }
+
+        .hero-name em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--soft);
+            max-width: 460px;
+            line-height: 1.85;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s 0.6s forwards;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.82rem;
+            color: var(--soft);
+            opacity: 0;
+            animation: fadeSlideUp 0.8s 0.8s forwards;
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* ── PERSONAL PHOTO (hero) ── */
+        .hero-photo-wrap {
+            position: absolute;
+            right: 5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            animation: fadeSlideUp 0.9s 0.9s forwards;
+        }
+
+        .hero-photo {
+            width: 220px;
+            height: 280px;
+            border-radius: 120px 120px 40px 40px;
+            overflow: hidden;
+            position: relative;
+            border: 3px solid var(--accent-light);
+            box-shadow: 0 30px 80px rgba(196, 132, 106, 0.2);
+        }
+
+        .hero-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-photo:hover img {
+            transform: scale(1.05);
+        }
+
+        .hero-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-light), var(--sage-light));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .hero-photo-placeholder:hover {
+            background: var(--accent-light);
+        }
+
+        .hero-photo-placeholder span {
+            font-size: 2rem;
+        }
+
+        .hero-photo-placeholder p {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            font-weight: 500;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero-photo-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 128px 128px 48px 48px;
+            border: 1px dashed var(--accent);
+            opacity: 0.4;
+            animation: spin-slow 20s linear infinite;
+        }
+
+        /* ── FLOATING BADGE ── */
+        .hero-badge {
+            position: absolute;
+            right: 2rem;
+            bottom: 6rem;
+            background: var(--accent-light);
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.3;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            font-weight: 500;
+            text-transform: uppercase;
+            animation: spin-slow 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .hero-badge.show {
+            opacity: 1;
+        }
+
+        .hero-badge strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            display: block;
+            text-transform: none;
+        }
+
+        @keyframes spin-slow {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 4rem;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--soft);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s 1.2s forwards;
+        }
+
+        .scroll-hint::before {
+            content: '';
+            width: 36px;
+            height: 1px;
+            background: var(--soft);
+        }
+
+        /* ── SECTIONS ── */
+        section {
+            padding: 5rem 4rem;
+        }
+
+        #projects {
+            background: var(--bg2);
+        }
+
+        .section-label {
+            font-size: 0.73rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+            font-weight: 300;
+            line-height: 1.05;
+            margin-bottom: 3rem;
+        }
+
+        /* ── TABS ── */
+        .tabs-bar {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+            overflow-x: auto;
+            gap: 0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            cursor: none;
+            padding: 0.85rem 1.5rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--soft);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--ink);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-btn:hover {
+            color: var(--ink);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ── ABOUT GRID ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-intro {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .about-intro em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .about-para {
+            color: var(--soft);
+            font-size: 0.95rem;
+            line-height: 1.9;
+            margin-bottom: 1.2rem;
+        }
+
+        .fun-facts {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .fun-facts h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 400;
+            margin-bottom: 1.2rem;
+        }
+
+        .fact-item {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            font-size: 0.87rem;
+            color: var(--soft);
+            line-height: 1.5;
+        }
+
+        .fact-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ── TIMELINE ── */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .tl-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.45rem;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg);
+            box-shadow: 0 0 0 1px var(--accent);
+            transition: transform 0.2s;
+        }
+
+        .tl-item:hover::before {
+            transform: scale(1.5);
+        }
+
+        .tl-date {
+            font-size: 0.73rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .tl-role {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.15rem;
+        }
+
+        .tl-org {
+            font-size: 0.87rem;
+            color: var(--soft);
+        }
+
+        .tl-type {
+            display: inline-block;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.15rem 0.65rem;
+            border-radius: 20px;
+            margin-top: 0.4rem;
+            font-weight: 500;
+        }
+
+        .tl-type.current {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .tl-type.past {
+            background: var(--sage-light);
+            color: var(--sage);
+        }
+
+        /* ── EDUCATION ── */
+        .edu-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            max-width: 480px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .edu-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        .edu-school {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 0.3rem;
+        }
+
+        .edu-program {
+            color: var(--soft);
+            font-size: 0.92rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .edu-period {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* ── ACHIEVEMENTS ── */
+        .ach-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ach-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ach-item:hover {
+            transform: translateX(6px);
+            box-shadow: -4px 0 0 var(--accent), 0 8px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .ach-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .ach-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 400;
+            margin-bottom: 0.2rem;
+        }
+
+        .ach-detail {
+            font-size: 0.84rem;
+            color: var(--soft);
+        }
+
+        /* ── PROJECT CARDS ── */
+        .proj-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .proj-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .proj-card-img {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--accent-light), var(--sage-light));
+        }
+
+        .proj-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .proj-card:hover .proj-card-img img {
+            transform: scale(1.06);
+        }
+
+        .proj-card-img-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .proj-card-img-placeholder:hover {
+            background: color-mix(in srgb, var(--accent-light) 70%, var(--sage-light));
+        }
+
+        .proj-card-img-placeholder span {
+            font-size: 2rem;
+        }
+
+        .proj-card-img-placeholder p {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .proj-card-body {
+            padding: 1.5rem 1.8rem;
+        }
+
+        .proj-tag {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+
+        .proj-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .proj-desc {
+            font-size: 0.87rem;
+            color: var(--soft);
+            line-height: 1.75;
+        }
+
+        .proj-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            font-size: 0.68rem;
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .badge.sage {
+            background: var(--sage-light);
+            color: var(--sage);
+        }
+
+        /* ── EVENT GALLERY ── */
+        .event-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .event-gallery-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .event-gallery-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-gallery-img {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--sage-light), var(--accent-light));
+            position: relative;
+        }
+
+        .event-gallery-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .event-gallery-card:hover .event-gallery-img img {
+            transform: scale(1.06);
+        }
+
+        .event-gallery-img-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .event-gallery-img-placeholder:hover {
+            opacity: 0.8;
+        }
+
+        .event-gallery-img-placeholder span {
+            font-size: 2.5rem;
+        }
+
+        .event-gallery-img-placeholder p {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--sage);
+            font-weight: 500;
+        }
+
+        .event-gallery-body {
+            padding: 1rem 1.2rem;
+            background: var(--bg);
+        }
+
+        .event-gallery-name {
+            font-size: 0.92rem;
+            font-weight: 500;
+            margin-bottom: 0.15rem;
+        }
+
+        .event-gallery-org {
+            font-size: 0.78rem;
+            color: var(--soft);
+        }
+
+        .event-gallery-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.15rem 0.55rem;
+            background: var(--sage-light);
+            color: var(--sage);
+            border-radius: 20px;
+            font-weight: 500;
+            margin-top: 0.4rem;
+        }
+
+        /* ── SKILLS ── */
+        .skills-category {
+            margin-bottom: 2.2rem;
+        }
+
+        .skills-cat-title {
+            font-size: 0.73rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+
+        .skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+        }
+
+        .skill-chip {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.38rem 1rem;
+            font-size: 0.82rem;
+            color: var(--soft);
+            transition: background 0.2s, color 0.2s, transform 0.15s, border-color 0.2s;
+            cursor: none;
+            user-select: none;
+        }
+
+        .skill-chip:hover {
+            background: var(--ink);
+            color: var(--bg);
+            border-color: var(--ink);
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        /* ── CERTS ── */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .cert-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.2rem 1.4rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .cert-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .cert-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .cert-name {
+            font-size: 0.87rem;
+            font-weight: 500;
+            margin-bottom: 0.15rem;
+            line-height: 1.4;
+        }
+
+        .cert-issuer {
+            font-size: 0.78rem;
+            color: var(--soft);
+        }
+
+        .cert-date {
+            font-size: 0.68rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            margin-top: 0.1rem;
+        }
+
+        /* ── IMAGE UPLOAD HIDDEN ── */
+        .img-upload-input {
+            display: none;
+        }
+
+        /* ── LIGHTBOX ── */
+        #lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 9995;
+            background: rgba(0, 0, 0, 0.88);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+
+        #lightbox.open {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        #lightbox img {
+            max-width: 90vw;
+            max-height: 88vh;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+
+        #lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            opacity: 0.7;
+            background: none;
+            border: none;
+            transition: opacity 0.2s;
+        }
+
+        #lightbox-close:hover {
+            opacity: 1;
+        }
+
+        /* ── CONTACT ── */
+        #contact {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 4rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 20% 50%, var(--sage-light) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 85% 20%, var(--accent-light) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        .tw-label {
+            font-size: 0.73rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--sage);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .tw-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.4rem, 2.5vw, 2rem);
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--ink);
+            max-width: 700px;
+        }
+
+        #cursor-tw {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--accent);
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .contact-info-grid {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .contact-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0.9rem 1.4rem;
+            text-decoration: none;
+            color: var(--ink);
+            font-size: 0.87rem;
+            transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .contact-chip:hover {
+            background: var(--ink);
+            color: var(--bg);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ── CONFETTI ── */
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9997;
+        }
+
+        /* ── NOISE ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9990;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.025;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.77rem;
+            color: var(--soft);
+            border-top: 1px solid var(--border);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ── UPLOAD HINT TOAST ── */
+        #upload-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--ink);
+            color: var(--bg);
+            padding: 0.7rem 1.4rem;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            z-index: 9994;
+            transition: transform 0.3s cubic-bezier(.25, .8, .25, 1);
+            pointer-events: none;
+        }
+
+        #upload-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .hero-photo-wrap {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 1.5rem;
+            }
+
+            #hero,
+            section,
+            #contact {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-badge {
+                display: none;
+            }
+
+            .scroll-hint {
+                left: 1.5rem;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            #cursor-dot,
+            #cursor-ring {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CURSOR -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- SCROLL PROGRESS -->
+    <div id="progress"></div>
+
+    <!-- CONFETTI -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox">
+        <button id="lightbox-close">✕</button>
+        <img id="lightbox-img" src="" alt="Preview" />
+    </div>
+
+    <!-- UPLOAD TOAST -->
+    <div id="upload-toast">✨ Photo updated!</div>
+
+    <!-- HIDDEN INPUTS FOR IMAGE UPLOADS -->
+    <input type="file" accept="image/*" class="img-upload-input" id="upload-hero" />
+    <input type="file" accept="image/*" class="img-upload-input" id="upload-proj-intellitrack" />
+    <input type="file" accept="image/*" class="img-upload-input" id="upload-proj-humac" />
+    <input type="file" accept="image/*" class="img-upload-input" id="upload-proj-buddies" />
+    <input type="file" accept="image/*" class="img-upload-input" id="upload-ev-cancer" />
+    <input type="file" accept="image/*" class="img-upload-input" id="upload-ev-fyp" />
+    <input type="file" accept="image/*" class="img-upload-input" id="upload-ev-ssa" />
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <a href="#hero" class="nav-name">Shireen Lee ✦</a>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="theme-toggle" id="themeBtn" title="Toggle theme">🌙</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <p class="hero-tag">Portfolio · 2026 · Selangor, Malaysia</p>
+            <h1 class="hero-name">Shireen<br /><em>Lee Ching Sze</em></h1>
+            <p class="hero-desc">Computer Science student, AI enthusiast & aspiring technologist — building at the
+                intersection of people and technology.</p>
+            <div class="hero-meta">
+                <span>📍 Selangor, Malaysia</span>
+                <span>🎓 Sunway College</span>
+                <span>She / Her</span>
+            </div>
+        </div>
+
+        <!-- PERSONAL PHOTO -->
+        <div class="hero-photo-wrap">
+            <div class="hero-photo-ring"></div>
+            <div class="hero-photo" id="hero-photo-container">
+                <img id="hero-photo-img" src="heroimg.png" alt="Shireen Lee" />
+                <div class="hero-photo-placeholder" onclick="document.getElementById('upload-hero').click()"
+                    id="hero-photo-placeholder" style="display:none;">
+                    <span>🌸</span>
+                    <p>Add your photo</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-badge" id="heroBadge">
+            <strong>Shireen</strong>
+        </div>
+        <p class="scroll-hint">Scroll to explore</p>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <p class="section-label">About</p>
+        <h2 class="section-title">Who I am</h2>
+        <div class="tabs-bar">
+            <button class="tab-btn active" data-tab="about-me">About Me</button>
+            <button class="tab-btn" data-tab="experience">Experience</button>
+            <button class="tab-btn" data-tab="education">Education</button>
+        </div>
+
+        <div class="tab-panel active" id="about-me">
+            <div class="about-grid">
+                <div>
+                    <p class="about-intro">Hi, I'm Shireen — curious by nature, <em>people-first</em> by design.</p>
+                    <p class="about-para">I'm a Diploma in Computer Science student at Sunway College, passionate about
+                        artificial intelligence, data, and building things that genuinely matter to people.</p>
+                    <p class="about-para">Beyond code, I've led student programmes, mentored peers, and competed in tech
+                        showcases — all driven by a belief that technology is most powerful when it's human. I hold over
+                        17 certifications across AI, data, and professional skills.</p>
+                    <p class="about-para">When I'm not studying or building, you'll find me learning Thai (slowly 😄),
+                        exploring cultural connections, or volunteering at community events.</p>
+                </div>
+                <div class="fun-facts">
+                    <h3>A few things about me ✨</h3>
+                    <div class="fact-item"><span class="fact-icon">🏅</span><span>Sin Chew Education Fund Scholar 2024
+                            (Diploma)</span></div>
+                    <div class="fact-item"><span class="fact-icon">🤖</span><span>Certified in AI Literacy, Generative
+                            AI & Prompt Engineering</span></div>
+                    <div class="fact-item"><span class="fact-icon">🌏</span><span>Cross-cultural communicator with basic
+                            conversational Thai</span></div>
+                    <div class="fact-item"><span class="fact-icon">🔬</span><span>Currently interning at HUMAC —
+                            Research Centre for Human-Machine Collaboration</span></div>
+                    <div class="fact-item"><span class="fact-icon">🎓</span><span>Executive of Buddies Programme @
+                            Sunway Student Ambassador</span></div>
+                    <div class="fact-item"><span class="fact-icon">🏆</span><span>3rd Place at Tech FYP Competition
+                            Showcase & Award 2026</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="experience">
+            <div class="timeline">
+                <div class="tl-item fade-up">
+                    <p class="tl-date">Apr 2026 – Present</p>
+                    <p class="tl-role">Intern</p>
+                    <p class="tl-org">Research Centre for Human-Machine Collaboration (HUMAC)</p>
+                    <span class="tl-type current">Current</span>
+                </div>
+                <div class="tl-item fade-up">
+                    <p class="tl-date">Dec 2025 – Present</p>
+                    <p class="tl-role">Executive, Buddies Programme Dept.</p>
+                    <p class="tl-org">Sunway Student Ambassadors (SSA)</p>
+                    <span class="tl-type current">Current</span>
+                </div>
+                <div class="tl-item fade-up">
+                    <p class="tl-date">Nov 2025 – Present</p>
+                    <p class="tl-role">Student Helper</p>
+                    <p class="tl-org">Sunway Education (Part-time)</p>
+                    <span class="tl-type current">Current</span>
+                </div>
+                <div class="tl-item fade-up">
+                    <p class="tl-date">Mar 2024 – Aug 2024</p>
+                    <p class="tl-role">Customer Service</p>
+                    <p class="tl-org">Edusuperhero Sdn Bhd (Part-time, Remote)</p>
+                    <span class="tl-type past">Past</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="education">
+            <div class="edu-card fade-up">
+                <p class="edu-period">2024 – 2026</p>
+                <p class="edu-school">Sunway College</p>
+                <p class="edu-program">Diploma in Computer Science</p>
+            </div>
+            <br />
+            <p class="about-para" style="max-width:500px;">My studies cover programming fundamentals, databases, data
+                structures, and emerging technologies — with a strong personal focus on AI and human-computer
+                interaction.</p>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <p class="section-label">Projects</p>
+        <h2 class="section-title">Work & Achievements</h2>
+        <div class="tabs-bar">
+            <button class="tab-btn active" data-tab="competitions">Competitions</button>
+            <button class="tab-btn" data-tab="proj-list">Projects</button>
+            <button class="tab-btn" data-tab="skills-tab">Skills</button>
+            <button class="tab-btn" data-tab="certs">Certifications</button>
+            <button class="tab-btn" data-tab="events">Events & Gallery</button>
+        </div>
+
+        <div class="tab-panel active" id="competitions">
+            <div class="ach-list">
+                <div class="ach-item fade-up confetti-trigger">
+                    <span class="ach-icon">🥉</span>
+                    <div>
+                        <p class="ach-title">3rd Place — Tech FYP Competition Showcase & Award 2026</p>
+                        <p class="ach-detail">IntelliTrack project · Sunway College · March 2026</p>
+                    </div>
+                </div>
+                <div class="ach-item fade-up confetti-trigger">
+                    <span class="ach-icon">🏅</span>
+                    <div>
+                        <p class="ach-title">Sin Chew Education Fund Scholar</p>
+                        <p class="ach-detail">Scholarship awarded in recognition of academic excellence and community
+                            contribution</p>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top:1.5rem; font-size:0.8rem; color:var(--soft);">✦ Hover the cards for a surprise 🎉</p>
+        </div>
+
+        <div class="tab-panel" id="proj-list">
+            <div class="proj-grid">
+                <!-- IntelliTrack -->
+                <div class="proj-card fade-up tilt-card">
+                    <div class="proj-card-img">
+                        <img id="proj-img-intellitrack"
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23C4846A;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%238A9E8C;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g1)'/%3E%3Ctext x='200' y='150' font-size='72' text-anchor='middle' dominant-baseline='middle' fill='white' opacity='0.5'%3E🤖%3C/text%3E%3C/svg%3E"
+                            alt="IntelliTrack" />
+                        <div class="proj-card-img-placeholder" id="proj-ph-intellitrack"
+                            onclick="document.getElementById('upload-proj-intellitrack').click()" style="display:none;">
+                            <span>🤖</span>
+                            <p>Add project photo</p>
+                        </div>
+                    </div>
+                    <div class="proj-card-body">
+                        <p class="proj-tag">FYP · AI</p>
+                        <p class="proj-name">IntelliTrack</p>
+                        <p class="proj-desc">Final Year Project that won 3rd Place at Sunway College's Tech FYP
+                            Competition Showcase & Award 2026. An intelligent tracking and management system powered by
+                            AI.</p>
+                        <div class="proj-badges"><span class="badge">AI</span><span
+                                class="badge sage">Award-Winning</span><span class="badge">2026</span></div>
+                    </div>
+                </div>
+                <!-- HUMAC -->
+                <div class="proj-card fade-up tilt-card">
+                    <div class="proj-card-img">
+                        <img id="proj-img-humac"
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='g2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%238A9E8C;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23C4846A;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g2)'/%3E%3Ctext x='200' y='150' font-size='72' text-anchor='middle' dominant-baseline='middle' fill='white' opacity='0.5'%3E🔬%3C/text%3E%3C/svg%3E"
+                            alt="HUMAC Research" />
+                        <div class="proj-card-img-placeholder" id="proj-ph-humac"
+                            onclick="document.getElementById('upload-proj-humac').click()" style="display:none;">
+                            <span>🔬</span>
+                            <p>Add project photo</p>
+                        </div>
+                    </div>
+                    <div class="proj-card-body">
+                        <p class="proj-tag">Research · Internship</p>
+                        <p class="proj-name">HUMAC Research</p>
+                        <p class="proj-desc">Working as an intern at the Research Centre for Human-Machine Collaboration
+                            — exploring how humans and AI systems work together effectively.</p>
+                        <div class="proj-badges"><span class="badge">HCI</span><span class="badge sage">Ongoing</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Buddies -->
+                <div class="proj-card fade-up tilt-card">
+                    <div class="proj-card-img">
+                        <img id="proj-img-buddies"
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='g3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23F0DDD4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23E4EDE4;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g3)'/%3E%3Ctext x='200' y='150' font-size='72' text-anchor='middle' dominant-baseline='middle' fill='%23C4846A' opacity='0.5'%3E🎓%3C/text%3E%3C/svg%3E"
+                            alt="Buddies Programme" />
+                        <div class="proj-card-img-placeholder" id="proj-ph-buddies"
+                            onclick="document.getElementById('upload-proj-buddies').click()" style="display:none;">
+                            <span>🎓</span>
+                            <p>Add project photo</p>
+                        </div>
+                    </div>
+                    <div class="proj-card-body">
+                        <p class="proj-tag">Community · Leadership</p>
+                        <p class="proj-name">Buddies Programme</p>
+                        <p class="proj-desc">Leading the Buddies Programme at Sunway Student Ambassadors — connecting
+                            new students with mentors to ease their transition into college life.</p>
+                        <div class="proj-badges"><span class="badge sage">Leadership</span><span
+                                class="badge">Ongoing</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="skills-tab">
+            <div class="skills-category fade-up">
+                <p class="skills-cat-title">🤖 Technical & AI</p>
+                <div class="skills-wrap">
+                    <span class="skill-chip">Anthropic Claude</span><span class="skill-chip">Claude Skills</span>
+                    <span class="skill-chip">Generative AI</span><span class="skill-chip">AI Literacy</span>
+                    <span class="skill-chip">Prompt Engineering</span><span class="skill-chip">AI Fundamentals</span>
+                    <span class="skill-chip">Data Analytics</span><span class="skill-chip">Data Management</span>
+                    <span class="skill-chip">Databases</span>
+                </div>
+            </div>
+            <div class="skills-category fade-up">
+                <p class="skills-cat-title">🤝 Interpersonal & Professional</p>
+                <div class="skills-wrap">
+                    <span class="skill-chip">Communication</span><span class="skill-chip">Leadership Development</span>
+                    <span class="skill-chip">Problem Solving</span><span class="skill-chip">Customer Service</span>
+                    <span class="skill-chip">Teamwork</span><span class="skill-chip">Networking</span>
+                </div>
+            </div>
+            <div class="skills-category fade-up">
+                <p class="skills-cat-title">🌏 Languages & Culture</p>
+                <div class="skills-wrap">
+                    <span class="skill-chip">Cross-Cultural Communication</span>
+                    <span class="skill-chip">Basic Conversational Thai</span>
+                    <span class="skill-chip">Mandarin Chinese</span><span class="skill-chip">English</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="certs">
+            <div class="cert-grid">
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">Claude 101</p>
+                        <p class="cert-issuer">Anthropic</p>
+                        <p class="cert-date">May 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">Claude Code in Action</p>
+                        <p class="cert-issuer">Anthropic</p>
+                        <p class="cert-date">May 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">Professional Networking for Career Growth</p>
+                        <p class="cert-issuer">HP LIFE</p>
+                        <p class="cert-date">May 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">Artificial Intelligence for Lifelong Learning</p>
+                        <p class="cert-issuer">Chulalongkorn University</p>
+                        <p class="cert-date">Apr 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">How do Generative AI and ChatGPT Work?</p>
+                        <p class="cert-issuer">Chulalongkorn University</p>
+                        <p class="cert-date">Apr 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">Thai Language Course for Chinese Speakers</p>
+                        <p class="cert-issuer">Thailand Foundation</p>
+                        <p class="cert-date">Apr 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">AI Fluency</p>
+                        <p class="cert-issuer">Ministry of Digital Malaysia</p>
+                        <p class="cert-date">Jan 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">📜</span>
+                    <div>
+                        <p class="cert-name">Crafting Prompts for ChatGPT</p>
+                        <p class="cert-issuer">HRD Corp</p>
+                        <p class="cert-date">Mar 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">🏆</span>
+                    <div>
+                        <p class="cert-name">Tech FYP Competition Showcase & Award 2026</p>
+                        <p class="cert-issuer">Sunway College</p>
+                        <p class="cert-date">Mar 2026</p>
+                    </div>
+                </div>
+                <div class="cert-item fade-up"><span class="cert-icon">❤️</span>
+                    <div>
+                        <p class="cert-name">Volunteer — National Cancer Congress Malaysia 2025</p>
+                        <p class="cert-issuer">National Cancer Society Malaysia</p>
+                        <p class="cert-date">Jun 2025</p>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top:1.5rem; font-size:0.8rem; color:var(--soft);">✦ 17 total · More on <a
+                    href="https://www.linkedin.com/in/shireen1216/" target="_blank"
+                    style="color:var(--accent);">LinkedIn</a></p>
+        </div>
+
+        <!-- EVENTS WITH GALLERY -->
+        <div class="tab-panel" id="events">
+            <p class="section-label" style="margin-bottom:1.5rem;">Photo Gallery — click to upload your event photos</p>
+            <div class="event-gallery">
+                <!-- National Cancer Congress -->
+                <div class="event-gallery-card fade-up">
+                    <div class="event-gallery-img">
+                        <img id="ev-img-cancer"
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='g4' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23E4EDE4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%238A9E8C;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g4)'/%3E%3Ctext x='200' y='150' font-size='72' text-anchor='middle' dominant-baseline='middle' fill='white' opacity='0.5'%3E❤️%3C/text%3E%3C/svg%3E"
+                            alt="" />
+                        <div class="event-gallery-img-placeholder" id="ev-ph-cancer"
+                            onclick="document.getElementById('upload-ev-cancer').click()" style="display:none;">
+                            <span>❤️</span>
+                            <p>Add event photo</p>
+                        </div>
+                    </div>
+                    <div class="event-gallery-body">
+                        <p class="event-gallery-name">National Cancer Congress Malaysia 2025</p>
+                        <p class="event-gallery-org">National Cancer Society Malaysia</p>
+                        <span class="event-gallery-tag">Volunteer</span>
+                    </div>
+                </div>
+                <!-- FYP Competition -->
+                <div class="event-gallery-card fade-up">
+                    <div class="event-gallery-img">
+                        <img id="ev-img-fyp"
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='g5' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23F0DDD4;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23C4846A;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g5)'/%3E%3Ctext x='200' y='150' font-size='72' text-anchor='middle' dominant-baseline='middle' fill='white' opacity='0.5'%3E🥉%3C/text%3E%3C/svg%3E"
+                            alt="" />
+                        <div class="event-gallery-img-placeholder" id="ev-ph-fyp"
+                            onclick="document.getElementById('upload-ev-fyp').click()" style="display:none;">
+                            <span>🥉</span>
+                            <p>Add event photo</p>
+                        </div>
+                    </div>
+                    <div class="event-gallery-body">
+                        <p class="event-gallery-name">Tech FYP Competition Showcase & Award 2026</p>
+                        <p class="event-gallery-org">Sunway College</p>
+                        <span class="event-gallery-tag">Competitor</span>
+                    </div>
+                </div>
+                <!-- SSA Buddies -->
+                <div class="event-gallery-card fade-up">
+                    <div class="event-gallery-img">
+                        <img id="ev-img-ssa"
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cdefs%3E%3ClinearGradient id='g6' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%238A9E8C;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23F0DDD4;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='300' fill='url(%23g6)'/%3E%3Ctext x='200' y='150' font-size='72' text-anchor='middle' dominant-baseline='middle' fill='white' opacity='0.5'%3E🎓%3C/text%3E%3C/svg%3E"
+                            alt="" />
+                        <div class="event-gallery-img-placeholder" id="ev-ph-ssa"
+                            onclick="document.getElementById('upload-ev-ssa').click()" style="display:none;">
+                            <span>🎓</span>
+                            <p>Add event photo</p>
+                        </div>
+                    </div>
+                    <div class="event-gallery-body">
+                        <p class="event-gallery-name">Sunway Student Ambassadors — Buddies Programme</p>
+                        <p class="event-gallery-org">Sunway College</p>
+                        <span class="event-gallery-tag">Organiser</span>
+                    </div>
+                </div>
+            </div>
+            <p style="font-size:0.8rem; color:var(--soft);">✦ Click any photo card to upload your event images · Click
+                uploaded photos to enlarge</p>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="contact-bg"></div>
+        <div style="position:relative;">
+            <p class="tw-label">A note for you</p>
+            <p class="tw-text" id="typewriter-el"></p><span id="cursor-tw"></span>
+        </div>
+        <div class="contact-info-grid">
+            <a href="https://www.linkedin.com/in/shireen1216/" target="_blank"
+                class="contact-chip magnetic"><span>💼</span> LinkedIn</a>
+            <a href="mailto:leeshireen1216@email.com" class="contact-chip magnetic"><span>✉️</span> Email Me</a>
+            <span class="contact-chip"><span>📍</span> Selangor, Malaysia</span>
+        </div>
+    </section>
+
+    <footer>Designed & built with care · Shireen Lee Ching Sze · 2026</footer>
+
+    <script>
+        /* ══ CURSOR ══ */
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+        });
+        (function animRing() {
+            rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+            requestAnimationFrame(animRing);
+        })();
+        document.querySelectorAll('a,button,.skill-chip,.proj-card,.ach-item,.cert-item,.event-gallery-card,.tab-btn,.contact-chip,.edu-card,.hero-photo-placeholder,.proj-card-img-placeholder,.event-gallery-img-placeholder').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+        document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
+        document.addEventListener('mouseup', () => document.body.classList.remove('cursor-click'));
+
+        /* ══ SCROLL PROGRESS ══ */
+        const progressBar = document.getElementById('progress');
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            progressBar.style.width = pct + '%';
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        /* ══ HERO CANVAS ══ */
+        (function () {
+            const canvas = document.getElementById('hero-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [];
+            const symbols = ['✦', '◇', '○', '△', '✿', '✸', '◈'];
+            function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+            resize(); window.addEventListener('resize', resize);
+            for (let i = 0; i < 28; i++) {
+                particles.push({
+                    x: Math.random() * 1200, y: Math.random() * 800,
+                    vx: (Math.random() - .5) * 0.3, vy: (Math.random() - .5) * 0.2,
+                    sym: symbols[Math.floor(Math.random() * symbols.length)],
+                    size: Math.random() * 14 + 8, alpha: Math.random() * 0.3 + 0.05
+                });
+            }
+            const isDark = () => document.documentElement.dataset.theme === 'dark';
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                particles.forEach(p => {
+                    ctx.save(); ctx.globalAlpha = p.alpha;
+                    ctx.fillStyle = isDark() ? '#D4987C' : '#C4846A';
+                    ctx.font = `${p.size}px serif`;
+                    ctx.fillText(p.sym, p.x, p.y);
+                    ctx.restore();
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < -40) p.x = W + 40; if (p.x > W + 40) p.x = -40;
+                    if (p.y < -40) p.y = H + 40; if (p.y > H + 40) p.y = -40;
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+            setTimeout(() => document.getElementById('heroBadge').classList.add('show'), 1200);
+        })();
+
+        /* ══ THEME ══ */
+        document.getElementById('themeBtn').addEventListener('click', () => {
+            const isDark = document.documentElement.dataset.theme === 'dark';
+            document.documentElement.dataset.theme = isDark ? 'light' : 'dark';
+            document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+        });
+
+        /* ══ TABS ══ */
+        document.querySelectorAll('.tabs-bar').forEach(bar => {
+            bar.addEventListener('click', e => {
+                const btn = e.target.closest('.tab-btn');
+                if (!btn) return;
+                bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const sec = bar.closest('section');
+                sec.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                const panel = document.getElementById(btn.dataset.tab);
+                if (panel) { panel.classList.add('active'); triggerFadeUps(); }
+            });
+        });
+
+        /* ══ FADE UPS ══ */
+        function triggerFadeUps() {
+            document.querySelectorAll('.fade-up:not(.visible)').forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('visible');
+            });
+        }
+        window.addEventListener('scroll', triggerFadeUps);
+        window.addEventListener('load', triggerFadeUps);
+        setTimeout(triggerFadeUps, 300);
+
+        /* ══ 3D TILT ══ */
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const cx = (e.clientX - r.left) / r.width - 0.5;
+                const cy = (e.clientY - r.top) / r.height - 0.5;
+                card.style.transform = `perspective(600px) rotateY(${cx * 14}deg) rotateX(${-cy * 10}deg) translateZ(8px)`;
+                card.style.boxShadow = `${-cx * 20}px ${cy * 20}px 40px rgba(0,0,0,0.12)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = ''; card.style.boxShadow = ''; });
+        });
+
+        /* ══ MAGNETIC ══ */
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const r = btn.getBoundingClientRect();
+                const cx = (e.clientX - r.left - r.width / 2) * 0.25;
+                const cy = (e.clientY - r.top - r.height / 2) * 0.25;
+                btn.style.transform = `translate(${cx}px, ${cy}px) translateY(-4px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+
+        /* ══ CONFETTI ══ */
+        const confCanvas = document.getElementById('confetti-canvas');
+        const confCtx = confCanvas.getContext('2d');
+        confCanvas.width = window.innerWidth; confCanvas.height = window.innerHeight;
+        window.addEventListener('resize', () => { confCanvas.width = window.innerWidth; confCanvas.height = window.innerHeight; });
+        let confetti = [];
+        function spawnConfetti(x, y) {
+            const colors = ['#C4846A', '#8A9E8C', '#F0DDD4', '#E4EDE4', '#F7C5A8', '#B8D4B8'];
+            for (let i = 0; i < 60; i++) {
+                confetti.push({
+                    x, y, vx: (Math.random() - 0.5) * 8, vy: Math.random() * -8 - 2,
+                    size: Math.random() * 7 + 3, color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360, rotV: (Math.random() - 0.5) * 8,
+                    alpha: 1, shape: Math.random() > 0.5 ? 'circle' : 'rect'
+                });
+            }
+        }
+        function drawConfetti() {
+            confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+            confetti = confetti.filter(c => c.alpha > 0.01);
+            confetti.forEach(c => {
+                confCtx.save(); confCtx.globalAlpha = c.alpha; confCtx.fillStyle = c.color;
+                confCtx.translate(c.x, c.y); confCtx.rotate(c.rot * Math.PI / 180);
+                if (c.shape === 'circle') { confCtx.beginPath(); confCtx.arc(0, 0, c.size / 2, 0, Math.PI * 2); confCtx.fill(); }
+                else { confCtx.fillRect(-c.size / 2, -c.size / 4, c.size, c.size / 2); }
+                confCtx.restore();
+                c.x += c.vx; c.y += c.vy; c.vy += 0.25; c.rot += c.rotV; c.alpha -= 0.018;
+            });
+            requestAnimationFrame(drawConfetti);
+        }
+        drawConfetti();
+        document.querySelectorAll('.confetti-trigger').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                const r = el.getBoundingClientRect();
+                spawnConfetti(r.left + r.width / 2, r.top + r.height / 2);
+            });
+        });
+
+        /* ══ TYPEWRITER ══ */
+        const messages = [
+            "Hi there — thanks for visiting!",
+            "I believe technology is most meaningful when it connects people.",
+            "Feel free to reach out — I'd love to hear from you. 🌸",
+            "Let's build something meaningful together.",
+            "Every visitor brings new possibilities.",
+            "Looking forward to connecting with you!"
+        ];
+        let mIdx = 0, cIdx = 0, del = false, pause = 0;
+        const twEl = document.getElementById('typewriter-el');
+        function type() {
+            if (pause > 0) { pause--; setTimeout(type, 80); return; }
+            const msg = messages[mIdx];
+            if (!del) {
+                twEl.textContent = msg.slice(0, ++cIdx);
+                if (cIdx === msg.length) { del = true; pause = 35; }
+                setTimeout(type, 55);
+            } else {
+                twEl.textContent = msg.slice(0, --cIdx);
+                if (cIdx === 0) { del = false; mIdx = (mIdx + 1) % messages.length; pause = 10; }
+                setTimeout(type, 28);
+            }
+        }
+        type();
+
+        /* ══ IMAGE UPLOAD SYSTEM ══ */
+        const IMAGE_SLOTS = {
+            'upload-hero': { img: 'hero-photo-img', ph: 'hero-photo-placeholder' },
+            'upload-proj-intellitrack': { img: 'proj-img-intellitrack', ph: 'proj-ph-intellitrack' },
+            'upload-proj-humac': { img: 'proj-img-humac', ph: 'proj-ph-humac' },
+            'upload-proj-buddies': { img: 'proj-img-buddies', ph: 'proj-ph-buddies' },
+            'upload-ev-cancer': { img: 'ev-img-cancer', ph: 'ev-ph-cancer' },
+            'upload-ev-fyp': { img: 'ev-img-fyp', ph: 'ev-ph-fyp' },
+            'upload-ev-ssa': { img: 'ev-img-ssa', ph: 'ev-ph-ssa' },
+        };
+
+        function showToast(msg) {
+            const t = document.getElementById('upload-toast');
+            t.textContent = msg || '✨ Photo updated!';
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function saveHtmlWithImages() {
+            let html = document.documentElement.outerHTML;
+            const blob = new Blob([html], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'shireen-portfolio.html';
+            a.click();
+            URL.revokeObjectURL(a.href);
+            showToast('💾 Saved! Replace your file with the download.');
+        }
+
+        function showSaveBtn() {
+            let btn = document.getElementById('save-btn');
+            if (!btn) {
+                btn = document.createElement('button');
+                btn.id = 'save-btn';
+                btn.textContent = '💾 Save to file';
+                btn.style.cssText = `
+            position:fixed; bottom:2rem; right:2rem; z-index:9993;
+            background:var(--ink); color:var(--bg); border:none;
+            border-radius:30px; padding:0.75rem 1.5rem; font-size:0.85rem;
+            font-family:'DM Sans',sans-serif; font-weight:500;
+            cursor:pointer; box-shadow:0 8px 30px rgba(0,0,0,0.2);
+            transition:transform 0.2s, box-shadow 0.2s;
+            animation:fadeSlideUp 0.4s ease forwards;
+        `;
+                btn.onmouseenter = () => btn.style.transform = 'translateY(-3px)';
+                btn.onmouseleave = () => btn.style.transform = '';
+                btn.onclick = saveHtmlWithImages;
+                document.body.appendChild(btn);
+            }
+        }
+
+        function bindUpload(inputId, imgId, placeholderId) {
+            const input = document.getElementById(inputId);
+            const img = document.getElementById(imgId);
+            const ph = document.getElementById(placeholderId);
+            if (!input || !img) return;
+            input.addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    img.src = ev.target.result;
+                    img.style.display = 'block';
+                    if (ph) ph.style.display = 'none';
+                    img.style.cursor = 'zoom-in';
+                    img.onclick = () => openLightbox(ev.target.result);
+                    showToast('✨ Photo added! Click 💾 to save permanently.');
+                    showSaveBtn();
+                };
+                reader.readAsDataURL(file);
+                input.value = '';
+            });
+        }
+
+        Object.entries(IMAGE_SLOTS).forEach(([inputId, { img, ph }]) => bindUpload(inputId, img, ph));
+
+        document.querySelectorAll('img[id^="hero-photo-img"], img[id^="proj-img-"], img[id^="ev-img-"]').forEach(img => {
+            if (img.src && img.src.startsWith('data:')) {
+                img.style.display = 'block';
+                const phId = img.id.replace('hero-photo-img', 'hero-photo-placeholder').replace('proj-img-', 'proj-ph-').replace('ev-img-', 'ev-ph-');
+                const ph = document.getElementById(phId);
+                if (ph) ph.style.display = 'none';
+                img.style.cursor = 'zoom-in';
+                img.onclick = () => openLightbox(img.src);
+            }
+        });
+
+        /* ══ LIGHTBOX ══ */
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('open');
+        }
+        document.getElementById('lightbox-close').addEventListener('click', () => {
+            document.getElementById('lightbox').classList.remove('open');
+        });
+        document.getElementById('lightbox').addEventListener('click', e => {
+            if (e.target === document.getElementById('lightbox')) {
+                document.getElementById('lightbox').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+
+</html>
