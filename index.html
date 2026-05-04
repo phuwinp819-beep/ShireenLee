@@ -275,7 +275,7 @@
             gap: 0.4rem;
         }
 
-        /* ── PERSONAL PHOTO (hero) ── */
+        /* ── PERSONAL PHOTO ── */
         .hero-photo-wrap {
             position: absolute;
             right: 5rem;
@@ -346,7 +346,7 @@
             animation: spin-slow 20s linear infinite;
         }
 
-        /* ── FLOATING BADGE ── */
+        /* ── HERO BADGE ── */
         .hero-badge {
             position: absolute;
             right: 2rem;
@@ -1142,6 +1142,8 @@
             color: var(--ink);
             font-size: 0.87rem;
             transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
         }
 
         .contact-chip:hover {
@@ -1189,7 +1191,7 @@
             transform: none;
         }
 
-        /* ── UPLOAD HINT TOAST ── */
+        /* ── UPLOAD TOAST ── */
         #upload-toast {
             position: fixed;
             bottom: 2rem;
@@ -1207,6 +1209,333 @@
 
         #upload-toast.show {
             transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── CONTACT MODAL ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9996;
+            background: rgba(28, 28, 26, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .contact-modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            width: 100%;
+            max-width: 520px;
+            padding: 2.8rem;
+            position: relative;
+            transform: translateY(32px) scale(0.96);
+            transition: transform 0.4s cubic-bezier(.25, .8, .25, 1);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(196, 132, 106, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.open .contact-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .cmodal-deco {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--sage), transparent);
+            border-radius: 0 0 6px 6px;
+            pointer-events: none;
+        }
+
+        .cmodal-close {
+            position: absolute;
+            top: 1.3rem;
+            right: 1.3rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: none;
+            color: var(--soft);
+            transition: background 0.2s, color 0.2s, transform 0.25s;
+        }
+
+        .cmodal-close:hover {
+            background: var(--ink);
+            color: var(--bg);
+            transform: rotate(90deg);
+        }
+
+        .modal-tag-inner {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.35rem;
+        }
+
+        .cmodal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.1rem;
+            font-weight: 300;
+            line-height: 1.1;
+            color: var(--ink);
+            margin-bottom: 0.35rem;
+        }
+
+        .cmodal-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .cmodal-sub {
+            font-size: 0.84rem;
+            color: var(--soft);
+            margin-bottom: 1.5rem;
+            line-height: 1.65;
+        }
+
+        .cpill-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--soft);
+            font-weight: 500;
+            margin-bottom: 0.55rem;
+        }
+
+        .creason-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .cpill {
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            padding: 0.32rem 0.85rem;
+            font-size: 0.76rem;
+            color: var(--soft);
+            cursor: none;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .cpill:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .cpill.cselected {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .cform-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .cform-float {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .cform-float input,
+        .cform-float textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 1.15rem 1rem 0.45rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            color: var(--ink);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            resize: none;
+            -webkit-appearance: none;
+        }
+
+        .cform-float input::placeholder,
+        .cform-float textarea::placeholder {
+            color: transparent;
+        }
+
+        .cform-float input:focus,
+        .cform-float textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(196, 132, 106, 0.13);
+        }
+
+        .cform-float label {
+            position: absolute;
+            top: 0.82rem;
+            left: 1rem;
+            font-size: 0.84rem;
+            color: #BDB8B0;
+            transition: all 0.2s;
+            pointer-events: none;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        .cform-float input:focus+label,
+        .cform-float input:not(:placeholder-shown)+label,
+        .cform-float textarea:focus+label,
+        .cform-float textarea:not(:placeholder-shown)+label {
+            top: 0.28rem;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .cchar-count {
+            font-size: 0.68rem;
+            color: var(--soft);
+            text-align: right;
+            margin-bottom: 1.4rem;
+            margin-top: 0.2rem;
+        }
+
+        .csubmit-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .csubmit-note {
+            font-size: 0.72rem;
+            color: var(--soft);
+        }
+
+        .csubmit-btn {
+            background: var(--ink);
+            color: var(--bg);
+            border: none;
+            border-radius: 30px;
+            padding: 0.8rem 1.8rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.84rem;
+            font-weight: 500;
+            cursor: none;
+            letter-spacing: 0.04em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .csubmit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+        }
+
+        .cbtn-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.12) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .csubmit-btn:hover .cbtn-shimmer {
+            transform: translateX(100%);
+        }
+
+        .csuccess-wrap {
+            text-align: center;
+            padding: 1rem 0;
+            animation: cPopIn 0.45s cubic-bezier(.25, .8, .25, 1);
+        }
+
+        @keyframes cPopIn {
+            from {
+                opacity: 0;
+                transform: scale(0.88) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .csuccess-icon {
+            font-size: 3.8rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .csuccess-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            color: var(--ink);
+        }
+
+        .csuccess-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .csuccess-sub {
+            font-size: 0.84rem;
+            color: var(--soft);
+            line-height: 1.7;
+            margin-bottom: 1.4rem;
+        }
+
+        .csuccess-link {
+            display: inline-block;
+            background: var(--accent-light);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 30px;
+            padding: 0.5rem 1.3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            margin-bottom: 0.8rem;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .csuccess-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
         }
 
         /* ── RESPONSIVE ── */
@@ -1248,6 +1577,24 @@
             #cursor-dot,
             #cursor-ring {
                 display: none;
+            }
+
+            .cform-row {
+                grid-template-columns: 1fr;
+            }
+
+            .csubmit-row {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .csubmit-note {
+                text-align: center;
+            }
+
+            .contact-modal {
+                padding: 2rem 1.5rem;
             }
         }
     </style>
@@ -1310,8 +1657,6 @@
                 <span>She / Her</span>
             </div>
         </div>
-
-        <!-- PERSONAL PHOTO -->
         <div class="hero-photo-wrap">
             <div class="hero-photo-ring"></div>
             <div class="hero-photo" id="hero-photo-container">
@@ -1323,10 +1668,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="hero-badge" id="heroBadge">
-            <strong>Shireen</strong>
-        </div>
+        <div class="hero-badge" id="heroBadge"><strong>Shireen</strong></div>
         <p class="scroll-hint">Scroll to explore</p>
     </section>
 
@@ -1439,7 +1781,6 @@
 
         <div class="tab-panel" id="proj-list">
             <div class="proj-grid">
-                <!-- IntelliTrack -->
                 <div class="proj-card fade-up tilt-card">
                     <div class="proj-card-img">
                         <img id="proj-img-intellitrack"
@@ -1461,7 +1802,6 @@
                                 class="badge sage">Award-Winning</span><span class="badge">2026</span></div>
                     </div>
                 </div>
-                <!-- HUMAC -->
                 <div class="proj-card fade-up tilt-card">
                     <div class="proj-card-img">
                         <img id="proj-img-humac"
@@ -1482,7 +1822,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Buddies -->
                 <div class="proj-card fade-up tilt-card">
                     <div class="proj-card-img">
                         <img id="proj-img-buddies"
@@ -1613,11 +1952,9 @@
                     style="color:var(--accent);">LinkedIn</a></p>
         </div>
 
-        <!-- EVENTS WITH GALLERY -->
         <div class="tab-panel" id="events">
             <p class="section-label" style="margin-bottom:1.5rem;">Photo Gallery — click to upload your event photos</p>
             <div class="event-gallery">
-                <!-- National Cancer Congress -->
                 <div class="event-gallery-card fade-up">
                     <div class="event-gallery-img">
                         <img id="ev-img-cancer"
@@ -1635,7 +1972,6 @@
                         <span class="event-gallery-tag">Volunteer</span>
                     </div>
                 </div>
-                <!-- FYP Competition -->
                 <div class="event-gallery-card fade-up">
                     <div class="event-gallery-img">
                         <img id="ev-img-fyp"
@@ -1653,7 +1989,6 @@
                         <span class="event-gallery-tag">Competitor</span>
                     </div>
                 </div>
-                <!-- SSA Buddies -->
                 <div class="event-gallery-card fade-up">
                     <div class="event-gallery-img">
                         <img id="ev-img-ssa"
@@ -1687,12 +2022,89 @@
         <div class="contact-info-grid">
             <a href="https://www.linkedin.com/in/shireen1216/" target="_blank"
                 class="contact-chip magnetic"><span>💼</span> LinkedIn</a>
-            <a href="mailto:leeshireen1216@gmail.com" class="contact-chip magnetic"><span>✉️</span> Email Me</a>
+
+            <!-- ✅ UPDATED: Opens beautiful modal instead of broken mailto -->
+            <button class="contact-chip magnetic" id="openEmailModal"
+                style="background:var(--bg2);border:1px solid var(--border);cursor:none;">
+                <span>✉️</span> Email Me
+            </button>
+
             <span class="contact-chip"><span>📍</span> Selangor, Malaysia</span>
         </div>
     </section>
 
     <footer>Designed & built with care · Shireen Lee Ching Sze · 2026</footer>
+
+    <!-- ══════════════════════════════════════
+         CONTACT MODAL
+         ⚠️  Replace YOUR_FORM_ID with your real
+         Formspree ID from formspree.io (free)
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="contact-modal">
+            <div class="cmodal-deco"></div>
+            <button class="cmodal-close" id="cmodalCloseBtn">✕</button>
+
+            <!-- FORM VIEW -->
+            <div id="cFormView">
+                <p class="modal-tag-inner">Let's connect ✦</p>
+                <h2 class="cmodal-title">Say <em>hello</em> 🌸</h2>
+                <p class="cmodal-sub">Whether it's a collab, opportunity, or just a friendly hi — I'd love to hear from
+                    you!</p>
+
+                <p class="cpill-label">What's this about?</p>
+                <div class="creason-pills">
+                    <span class="cpill" data-val="Internship">💼 Internship</span>
+                    <span class="cpill" data-val="Collaboration">🤝 Collaboration</span>
+                    <span class="cpill" data-val="Project Idea">💡 Project Idea</span>
+                    <span class="cpill" data-val="Just saying hi">👋 Just saying hi</span>
+                    <span class="cpill" data-val="Other">✨ Other</span>
+                </div>
+
+                <form id="cContactForm" action="https://formspree.io/f/xbdwgybk" method="POST">
+                    <input type="hidden" name="topic" id="cTopicHidden" value="" />
+                    <div class="cform-row">
+                        <div class="cform-float">
+                            <input type="text" name="name" id="cName" placeholder=" " required />
+                            <label for="cName">Your name</label>
+                        </div>
+                        <div class="cform-float">
+                            <input type="email" name="email" id="cEmail" placeholder=" " required />
+                            <label for="cEmail">Your email</label>
+                        </div>
+                    </div>
+                    <div class="cform-float" style="margin-bottom:0.3rem;">
+                        <textarea name="message" id="cMsg" rows="4" placeholder=" " maxlength="500" required
+                            oninput="document.getElementById('cCharCount').textContent=this.value.length"></textarea>
+                        <label for="cMsg">Your message</label>
+                    </div>
+                    <div class="cchar-count"><span id="cCharCount">0</span> / 500</div>
+                    <div class="csubmit-row">
+                        <span class="csubmit-note">💌 Goes straight to my inbox</span>
+                        <button type="submit" class="csubmit-btn" id="cSubmitBtn">
+                            <span class="cbtn-shimmer"></span>
+                            <span id="cBtnText">Send message →</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- SUCCESS VIEW -->
+            <div id="cSuccessView" style="display:none;">
+                <div class="csuccess-wrap">
+                    <span class="csuccess-icon">🌸</span>
+                    <p class="csuccess-title">Message <em>sent!</em></p>
+                    <p class="csuccess-sub">Thank you for reaching out — I'll reply within 1–2 days. In the meantime,
+                        let's connect on LinkedIn!</p>
+                    <a href="https://www.linkedin.com/in/shireen1216/" target="_blank" class="csuccess-link">Open
+                        LinkedIn →</a><br />
+                    <button class="csubmit-btn" style="margin-top:0.8rem;" onclick="cResetForm()">
+                        <span class="cbtn-shimmer"></span>Send another →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         /* ══ CURSOR ══ */
@@ -1708,7 +2120,7 @@
             ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
             requestAnimationFrame(animRing);
         })();
-        document.querySelectorAll('a,button,.skill-chip,.proj-card,.ach-item,.cert-item,.event-gallery-card,.tab-btn,.contact-chip,.edu-card,.hero-photo-placeholder,.proj-card-img-placeholder,.event-gallery-img-placeholder').forEach(el => {
+        document.querySelectorAll('a,button,.skill-chip,.proj-card,.ach-item,.cert-item,.event-gallery-card,.tab-btn,.contact-chip,.edu-card,.hero-photo-placeholder,.proj-card-img-placeholder,.event-gallery-img-placeholder,.cpill,.csubmit-btn,.cmodal-close').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
         });
@@ -1733,12 +2145,7 @@
             function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
             resize(); window.addEventListener('resize', resize);
             for (let i = 0; i < 28; i++) {
-                particles.push({
-                    x: Math.random() * 1200, y: Math.random() * 800,
-                    vx: (Math.random() - .5) * 0.3, vy: (Math.random() - .5) * 0.2,
-                    sym: symbols[Math.floor(Math.random() * symbols.length)],
-                    size: Math.random() * 14 + 8, alpha: Math.random() * 0.3 + 0.05
-                });
+                particles.push({ x: Math.random() * 1200, y: Math.random() * 800, vx: (Math.random() - .5) * 0.3, vy: (Math.random() - .5) * 0.2, sym: symbols[Math.floor(Math.random() * symbols.length)], size: Math.random() * 14 + 8, alpha: Math.random() * 0.3 + 0.05 });
             }
             const isDark = () => document.documentElement.dataset.theme === 'dark';
             function draw() {
@@ -1746,9 +2153,7 @@
                 particles.forEach(p => {
                     ctx.save(); ctx.globalAlpha = p.alpha;
                     ctx.fillStyle = isDark() ? '#D4987C' : '#C4846A';
-                    ctx.font = `${p.size}px serif`;
-                    ctx.fillText(p.sym, p.x, p.y);
-                    ctx.restore();
+                    ctx.font = `${p.size}px serif`; ctx.fillText(p.sym, p.x, p.y); ctx.restore();
                     p.x += p.vx; p.y += p.vy;
                     if (p.x < -40) p.x = W + 40; if (p.x > W + 40) p.x = -40;
                     if (p.y < -40) p.y = H + 40; if (p.y > H + 40) p.y = -40;
@@ -1822,12 +2227,7 @@
         function spawnConfetti(x, y) {
             const colors = ['#C4846A', '#8A9E8C', '#F0DDD4', '#E4EDE4', '#F7C5A8', '#B8D4B8'];
             for (let i = 0; i < 60; i++) {
-                confetti.push({
-                    x, y, vx: (Math.random() - 0.5) * 8, vy: Math.random() * -8 - 2,
-                    size: Math.random() * 7 + 3, color: colors[Math.floor(Math.random() * colors.length)],
-                    rot: Math.random() * 360, rotV: (Math.random() - 0.5) * 8,
-                    alpha: 1, shape: Math.random() > 0.5 ? 'circle' : 'rect'
-                });
+                confetti.push({ x, y, vx: (Math.random() - 0.5) * 8, vy: Math.random() * -8 - 2, size: Math.random() * 7 + 3, color: colors[Math.floor(Math.random() * colors.length)], rot: Math.random() * 360, rotV: (Math.random() - 0.5) * 8, alpha: 1, shape: Math.random() > 0.5 ? 'circle' : 'rect' });
             }
         }
         function drawConfetti() {
@@ -1899,28 +2299,16 @@
             let html = document.documentElement.outerHTML;
             const blob = new Blob([html], { type: 'text/html' });
             const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'shireen-portfolio.html';
-            a.click();
-            URL.revokeObjectURL(a.href);
+            a.href = URL.createObjectURL(blob); a.download = 'shireen-portfolio.html';
+            a.click(); URL.revokeObjectURL(a.href);
             showToast('💾 Saved! Replace your file with the download.');
         }
 
         function showSaveBtn() {
             let btn = document.getElementById('save-btn');
             if (!btn) {
-                btn = document.createElement('button');
-                btn.id = 'save-btn';
-                btn.textContent = '💾 Save to file';
-                btn.style.cssText = `
-            position:fixed; bottom:2rem; right:2rem; z-index:9993;
-            background:var(--ink); color:var(--bg); border:none;
-            border-radius:30px; padding:0.75rem 1.5rem; font-size:0.85rem;
-            font-family:'DM Sans',sans-serif; font-weight:500;
-            cursor:pointer; box-shadow:0 8px 30px rgba(0,0,0,0.2);
-            transition:transform 0.2s, box-shadow 0.2s;
-            animation:fadeSlideUp 0.4s ease forwards;
-        `;
+                btn = document.createElement('button'); btn.id = 'save-btn'; btn.textContent = '💾 Save to file';
+                btn.style.cssText = `position:fixed;bottom:2rem;right:2rem;z-index:9993;background:var(--ink);color:var(--bg);border:none;border-radius:30px;padding:0.75rem 1.5rem;font-size:0.85rem;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,0.2);transition:transform 0.2s,box-shadow 0.2s;animation:fadeSlideUp 0.4s ease forwards;`;
                 btn.onmouseenter = () => btn.style.transform = 'translateY(-3px)';
                 btn.onmouseleave = () => btn.style.transform = '';
                 btn.onclick = saveHtmlWithImages;
@@ -1938,44 +2326,74 @@
                 if (!file) return;
                 const reader = new FileReader();
                 reader.onload = ev => {
-                    img.src = ev.target.result;
-                    img.style.display = 'block';
+                    img.src = ev.target.result; img.style.display = 'block';
                     if (ph) ph.style.display = 'none';
                     img.style.cursor = 'zoom-in';
                     img.onclick = () => openLightbox(ev.target.result);
                     showToast('✨ Photo added! Click 💾 to save permanently.');
                     showSaveBtn();
                 };
-                reader.readAsDataURL(file);
-                input.value = '';
+                reader.readAsDataURL(file); input.value = '';
             });
         }
-
         Object.entries(IMAGE_SLOTS).forEach(([inputId, { img, ph }]) => bindUpload(inputId, img, ph));
-
-        document.querySelectorAll('img[id^="hero-photo-img"], img[id^="proj-img-"], img[id^="ev-img-"]').forEach(img => {
-            if (img.src && img.src.startsWith('data:')) {
-                img.style.display = 'block';
-                const phId = img.id.replace('hero-photo-img', 'hero-photo-placeholder').replace('proj-img-', 'proj-ph-').replace('ev-img-', 'ev-ph-');
-                const ph = document.getElementById(phId);
-                if (ph) ph.style.display = 'none';
-                img.style.cursor = 'zoom-in';
-                img.onclick = () => openLightbox(img.src);
-            }
-        });
 
         /* ══ LIGHTBOX ══ */
         function openLightbox(src) {
             document.getElementById('lightbox-img').src = src;
             document.getElementById('lightbox').classList.add('open');
         }
-        document.getElementById('lightbox-close').addEventListener('click', () => {
-            document.getElementById('lightbox').classList.remove('open');
+        document.getElementById('lightbox-close').addEventListener('click', () => document.getElementById('lightbox').classList.remove('open'));
+        document.getElementById('lightbox').addEventListener('click', e => { if (e.target === document.getElementById('lightbox')) document.getElementById('lightbox').classList.remove('open'); });
+
+        /* ══ CONTACT MODAL ══ */
+        document.getElementById('openEmailModal').addEventListener('click', () => {
+            document.getElementById('contactModal').classList.add('open');
         });
-        document.getElementById('lightbox').addEventListener('click', e => {
-            if (e.target === document.getElementById('lightbox')) {
-                document.getElementById('lightbox').classList.remove('open');
+        document.getElementById('cmodalCloseBtn').addEventListener('click', () => {
+            document.getElementById('contactModal').classList.remove('open');
+        });
+        document.getElementById('contactModal').addEventListener('click', function (e) {
+            if (e.target === this) this.classList.remove('open');
+        });
+        document.querySelectorAll('.cpill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.cpill').forEach(p => p.classList.remove('cselected'));
+                pill.classList.add('cselected');
+                document.getElementById('cTopicHidden').value = pill.dataset.val;
+            });
+        });
+        document.getElementById('cContactForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = document.getElementById('cSubmitBtn');
+            const btnText = document.getElementById('cBtnText');
+            btnText.textContent = 'Sending… 🌸'; btn.disabled = true;
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' }
+                });
+                if (response.ok) {
+                    document.getElementById('cFormView').style.display = 'none';
+                    document.getElementById('cSuccessView').style.display = 'block';
+                } else { throw new Error('error'); }
+            } catch {
+                btnText.textContent = 'Oops! Try emailing directly 😔'; btn.disabled = false;
             }
+        });
+        function cResetForm() {
+            document.getElementById('cContactForm').reset();
+            document.getElementById('cCharCount').textContent = '0';
+            document.querySelectorAll('.cpill').forEach(p => p.classList.remove('cselected'));
+            document.getElementById('cTopicHidden').value = '';
+            document.getElementById('cBtnText').textContent = 'Send message →';
+            document.getElementById('cSubmitBtn').disabled = false;
+            document.getElementById('cFormView').style.display = 'block';
+            document.getElementById('cSuccessView').style.display = 'none';
+        }
+
+        /* Close modal on ESC key */
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') document.getElementById('contactModal').classList.remove('open');
         });
     </script>
 </body>
